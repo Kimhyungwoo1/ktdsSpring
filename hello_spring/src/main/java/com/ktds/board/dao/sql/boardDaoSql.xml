@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="BoardDao">
+	
+		<select id="getAllArticles" resultType="BoardVO">
+			SELECT	/*[BoardDao][getAllArticles]*/
+					BOARD_ID boardId
+					, SUBJECT subject
+					, WRTR writer
+					, CONT content
+					, LIKE_CNT likeCount
+					, WRT_DATE writeDate
+			FROM		BOARD
+			ORDER	BY BOARD_ID DESC
+		</select>
+	
+		<select id="getOneArticle" parameterType="_int" resultType="BoardVO">
+			SELECT	/*[BoardDao][getOneArticle]*/
+					BOARD_ID boardId
+					, SUBJECT subject
+					, WRTR writer
+					, CONT content
+					, LIKE_CNT likeCount
+					, WRT_DATE writeDate
+			FROM		BOARD
+			WHERE	BOARD_ID = #{boardId}
+		</select>
+	
+		<insert id="insertArticle" parameterType="BoardVO">
+			INSERT INTO BOARD 	/*[BoardDao][insertArticle]*/(
+									BOARD_ID
+									, SUBJECT
+									, WRTR
+									, CONT
+									, LIKE_CNT
+									, WRT_DATE
+								)
+			VALUES				(
+									BOARD_ID_SEQ.NEXTVAL
+									, #{subject}
+									, #{writer}
+									, #{content}
+									, 0
+									, SYSDATE
+								)
+		</insert>
+		
+		<delete id="deleteArticle" parameterType="_int" >
+			DELETE
+			FROM		BOARD
+			WHERE	BOARD_ID = #{boardId}
+		</delete>
+		
+	</mapper>
+	
+	

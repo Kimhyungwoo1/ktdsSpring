@@ -59,8 +59,9 @@ public class BoardController {
 		view.setViewName("/board/detail");
 		BoardVO board = boardService.selectOneArticle(id);
 		view.addObject("board", board);
-
+		
 		return view;
+		
 	}
 
 	@RequestMapping(value = "/board/write", method = RequestMethod.GET)
@@ -85,7 +86,7 @@ public class BoardController {
 		
 		logger.info("" + boardVO.getFile());
 		
-		if( !boardVO.getFile().isEmpty() ){
+		if( boardVO.getFile() != null && !boardVO.getFile().isEmpty() ){
 			String filePath = "/Users/kimhyungwoo/Desktop/uploadFiles/" 
 						+ boardVO.getFile().getOriginalFilename();
 			File newFile = new File(filePath);

@@ -23,7 +23,7 @@
 
 	<form id="signIn">
 		<input type="text" name="userId" placeholder="아이디를 입력하세요."/>
-		<input type="text" name="userPassword" placeholder="비밀번호를 입력하세요."/>
+		<input type="password" name="userPassword" placeholder="비밀번호를 입력하세요."/>
 		<input type="button" value="signIn" />
 	</form>
 	
