@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="mavenServiceImpl" class="com.ktds.khw.service.MavenServiceImpl">
+		<property name="mavenBiz" ref="mavenBizImpl"></property>
+	</bean>
+	<bean id="mavenBizImpl" class="com.ktds.khw.biz.MavenBizImpl">
+		<property name="mavenDao" ref="mavenDaoImpl"></property>
+	</bean>
+	<bean id="mavenDaoImpl" class="com.ktds.khw.dao.MavenDaoImpl"></bean>
+	
+	
+
+</beans>
