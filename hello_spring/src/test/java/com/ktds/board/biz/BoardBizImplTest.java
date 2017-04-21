@@ -22,11 +22,11 @@ public class BoardBizImplTest {
 	@Autowired
 	private BoardBiz boardBizImpl;
 	
-	@Test
+	/*@Test
 	public void getAllArticle() {
 		List<BoardVO> boardList = boardBizImpl.getAllArticle();
 		assertNull(boardList);
-	}
+	}*/
 	
 	@Test
 	public void selectOneArticle() {

@@ -6,6 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시판 List</title>
+<script type="text/javascript" src="<c:url value="/static/js/jquery-3.1.1.min.js"/>"></script>
+
 </head>
 <body>
 	<c:if test="${empty sessionScope._USER_}">
@@ -37,7 +39,24 @@
 				<td>${list.ip }</td>
 			</tr>
 			</c:forEach>
-	</table>
+			</table>
+			<table>
+			<tr>
+				<td>
+					<form id="searchForm">
+						${pager}<br/>
+						키워드
+						<input type="text" name="keyword" /><br/>
+						작성자
+						<input type="text" name="writer"/><br/>
+						내용
+						<input type="text" name="content"/>
+						<input type="button" value="검색" onclick="movePage(0)"/><br/>
+						
+					</form>
+				</td>
+			</tr>
+		</table>
 	<a href="<c:url value="/board/write"/>"/>글쓰기</a>
 
 </body>

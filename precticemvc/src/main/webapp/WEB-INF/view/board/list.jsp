@@ -6,8 +6,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시판 List</title>
+<script type="text/javascript" src="<c:url value="/static/js/jquery-3.1.1.min.js"/>"></script>
 </head>
 <body>
+	<c:if test="${empty sessionScope._USER_ }" >
+		<a href="<c:url value="/user/signIn" />">로그인</a>
+		<a href="<c:url value="/user/signUp" />">회원가입</a>
+	</c:if>
+	<c:if test="${not empty sessionScope._USER_ }">
+		<a href="<c:url value="/user/signOut" />">로그아웃</a>
+	</c:if>
 
 	<table>
 		<tr>
@@ -20,10 +28,10 @@
 			<td>IP</td>
 		</tr>
 		
-			<c:forEach items="${allArticles}" var="list">
+		<c:forEach items="${allArticles}" var="list">
 			<tr>
 				<td>${list.boardId}</td>
-				<td><a href="<c:url value="/board/detail/${list.boardId}" />"/>${list.subject}</a></td>
+				<td><a href="<c:url value="/board/detail/${list.boardId}"/>"/>${list.subject }</a></td>
 				<td>${list.content}</td>
 				<td>${list.writer}</td>
 				<td>${list.likeCount}</td>
@@ -31,6 +39,15 @@
 				<td>${list.ip}</td>
 			</tr>
 			</c:forEach>
+	</table>
+	<table>
+		<tr>
+			<td>
+				<form id="searchForm">
+					${pager}
+				</form>
+			</td>
+		</tr>
 	</table>
 	<a href="<c:url value="/board/write"/>"/>글쓰기</a>
 

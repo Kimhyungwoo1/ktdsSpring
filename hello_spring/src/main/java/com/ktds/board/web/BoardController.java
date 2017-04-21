@@ -2,8 +2,12 @@ package com.ktds.board.web;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -14,11 +18,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ktds.board.service.BoardService;
+import com.ktds.board.vo.BoardListVO;
+import com.ktds.board.vo.BoardSearchVO;
 import com.ktds.board.vo.BoardVO;
+import com.ktds.common.DownloadUtil;
+import com.ktds.common.web.ClassicPageExplorer;
 
 @Controller
 public class BoardController {
@@ -32,24 +39,29 @@ public class BoardController {
 	}
 
 	@RequestMapping("/board")
-	public ModelAndView viewBoardListPage() {
+	public ModelAndView viewBoardListPage(BoardSearchVO boardSearchVO, HttpSession session) {
 		ModelAndView view = new ModelAndView();
-
+	
 		// /board/list
 		view.setViewName("/board/list");
-
-		List<BoardVO> allArticles = boardService.getAllArticle();
-		view.addObject("allArticles", allArticles);
-
+		
+		BoardListVO allArticles = boardService.getAllArticle(boardSearchVO);
+		view.addObject("allArticles", allArticles.getBoardList());
+		
+		ClassicPageExplorer pagerExplorer = new ClassicPageExplorer(allArticles.getPager());
+		String pager = pagerExplorer.getPagingList("pageNo", "[@]", "이전", "다음", "searchForm");
+		
+		view.addObject("pager", pager);
+		
 		logger.info("목록에 들어왔습니다.");
 		return view;
 	}
 	
-	@RequestMapping("/board/json")
+	/*@RequestMapping("/board/json")
 	@ResponseBody
-	public List<BoardVO> getBoardListJson() {
-		return boardService.getAllArticle();
-	}
+	public List<BoardVO> getBoardListJson(BoardSearchVO boardSearchVO) {
+		return boardService.getAllArticle(boardSearchVO);
+	}*/
 
 	@RequestMapping("/board/detail/{id}")
 	public ModelAndView viewDetailPage(@PathVariable int id) {
@@ -87,9 +99,16 @@ public class BoardController {
 		logger.info("" + boardVO.getFile());
 		
 		if( boardVO.getFile() != null && !boardVO.getFile().isEmpty() ){
+			
+			String fileName = UUID.randomUUID().toString();
+			
 			String filePath = "/Users/kimhyungwoo/Desktop/uploadFiles/" 
-						+ boardVO.getFile().getOriginalFilename();
+						+ fileName;
 			File newFile = new File(filePath);
+			// 파일의 원본 명
+			boardVO.setDisplayFileName(boardVO.getFile().getOriginalFilename());
+			// 암호화된 파일 명
+			boardVO.setRealFileName(fileName);
 			
 			try {
 				boardVO.getFile().transferTo(newFile);
@@ -108,6 +127,21 @@ public class BoardController {
 			return null;
 		}
 
+	}
+	
+	@RequestMapping("/board/download/{boardId}")
+	public void downloadFile(@PathVariable int boardId, HttpServletRequest request, 
+							HttpServletResponse response) {
+		BoardVO article = boardService.selectOneArticle(boardId);
+		
+		DownloadUtil downloadUtil = DownloadUtil.getInstance("/Users/kimhyungwoo/Desktop/uploadFiles/");
+		try {
+			downloadUtil.download(request, response, article.getRealFileName()
+								, article.getDisplayFileName());
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+		
 	}
 	
 	@RequestMapping("/board/delete/{id}")

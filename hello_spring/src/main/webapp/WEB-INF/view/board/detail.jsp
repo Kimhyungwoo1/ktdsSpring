@@ -11,6 +11,9 @@
 
 	<h1>${board.subject}</h1>
 	<hr/>
+	<c:if test="${not empty board.displayFileName}">
+		<a href="<c:url value="/board/download/${board.boardId}"/>">${board.displayFileName}</a>
+	</c:if><br/>
 	<span> ${board.writer}</span><span>${board.writeDate}</span><span>${board.likeCount}</span>
 	<p>
 		${board.content}

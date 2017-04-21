@@ -1,7 +1,5 @@
 package com.ktds.khw.board.web;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -11,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ktds.khw.board.service.BoardService;
+import com.ktds.khw.board.vo.BoardListVO;
+import com.ktds.khw.board.vo.BoardSearchVO;
 import com.ktds.khw.board.vo.BoardVO;
+import com.ktds.khw.common.web.ClassicPageExplorer;
 
 @Controller
 public class BoardController {
@@ -25,14 +26,19 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/board")
-	public ModelAndView viewBoardListPage() {
+	public ModelAndView viewBoardListPage(BoardSearchVO boardSearchVO) {
 		ModelAndView view = new ModelAndView();
 		
 		// /board/list
 		view.setViewName("/board/list");
 		
-		List<BoardVO> allArticles = boardService.getAllArticles();
-		view.addObject("allArticles", allArticles);
+		BoardListVO allArticles = boardService.getAllArticles(boardSearchVO);
+		view.addObject("allArticles", allArticles.getBoardList());
+		
+		ClassicPageExplorer pageExplorer = new ClassicPageExplorer(allArticles.getPager());
+		String pager = pageExplorer.getPagingList("pageNo", "[@]", "이전", "다음", "searchForm");
+		
+		view.addObject("pager", pager);
 		
 		return view;
 	}
@@ -87,6 +93,8 @@ public class BoardController {
 	public ModelAndView viewUpdatePage(@PathVariable int id){
 		ModelAndView view = new ModelAndView();
 		
+		logger.info("in the updatePage");
+		
 		view.setViewName("/board/update");
 		
 		BoardVO board = boardService.getOneArticle(id);
@@ -99,11 +107,17 @@ public class BoardController {
 	public String doActionUpdate(@PathVariable int id){
 		
 		BoardVO boardVO = boardService.getOneArticle(id);
+		logger.info("Subject : " + boardVO.getSubject());
+		logger.info("Content : " + boardVO.getContent());
+		logger.info("Writer : " + boardVO.getWriter());
+		
 		boolean isSuccess = boardService.updateArticle(boardVO);
 		
 		if (isSuccess) {
+			logger.info("Success Update");
 			return "redirect:/board";
 		} else {
+			logger.info("Fail Update");
 			return null;
 		}
 		

@@ -1,12 +1,12 @@
 package com.ktds.khw.board.biz;
 
-import java.util.List;
-
+import com.ktds.khw.board.vo.BoardListVO;
+import com.ktds.khw.board.vo.BoardSearchVO;
 import com.ktds.khw.board.vo.BoardVO;
 
 public interface BoardBiz {
 
-	public List<BoardVO> getAllArticles();
+	public BoardListVO getAllArticles(BoardSearchVO boardSearchVO);
 	
 	public BoardVO getOneArticle(int boardId);
 	

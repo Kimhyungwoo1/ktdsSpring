@@ -12,7 +12,7 @@
 		$("#writeForm").find("input[type=button]").click(function() {
 			$("#writeForm")attr({
 				"method":"post",
-				"action":"<c:url valeu="/board/write" />"
+				"action":"<c:url valeu="/board/write"/>"
 			});
 			$("#writeForm").submit();
 		});

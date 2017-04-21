@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="userDaoImpl" class="com.ktds.khw.user.dao.UserDaoImpl">
-		<property name="dataSource" ref="dataSource"></property>
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate"></property>
 	</bean>
 	
 	<bean id="userBizImpl" class="com.ktds.khw.user.biz.UserBizImpl">

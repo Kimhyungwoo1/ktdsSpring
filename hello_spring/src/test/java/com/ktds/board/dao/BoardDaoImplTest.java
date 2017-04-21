@@ -20,11 +20,11 @@ public class BoardDaoImplTest {
 	@Autowired
 	private BoardDao boardDaoImpl;
 	
-	@Test
+	/*@Test
 	public void getAllArticles(){
 		List<BoardVO> boardList = boardDaoImpl.getAllArticles();
 		assertNull(boardList);
-	}
+	}*/
 	
 	@Test
 	public void getOneArticle(){

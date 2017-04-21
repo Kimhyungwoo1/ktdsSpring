@@ -4,28 +4,85 @@
 
 	<mapper namespace="BoardDao">
 	
-		<select id="getAllArticles" resultType="BoardVO">
-			SELECT	/*[BoardDao][getAllArticles]*/
-					BOARD_ID boardId
-					, SUBJECT subject
-					, WRTR writer
-					, CONT content
-					, LIKE_CNT likeCount
-					, WRT_DATE writeDate
+		<select id="getAllArticlesCount" resultType="_int" parameterType="BoardSearchVO">
+			SELECT	COUNT(1)
 			FROM		BOARD
-			ORDER	BY BOARD_ID DESC
+			WHERE	1 = 1
+			<if test="keyword != null">
+			AND	SUBJECT LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="writer != null">
+			AND	WRTR LIKE '%' || #{writer} || '%'
+			</if>
+			<if test="content != null">
+			AND	CONT LIKE '%' || #{content} || '%'
+			</if>
 		</select>
 	
-		<select id="getOneArticle" parameterType="_int" resultType="BoardVO">
+		<select id="getAllArticles" resultType="BoardVO" parameterType="BoardSearchVO">
+			SELECT	/*[BoardDao][getAllArticles]*/
+					*
+			FROM		(
+						SELECT	ROWNUM RNUM
+								, A.*
+						FROM		(
+									SELECT	BOARD_ID boardId
+											, SUBJECT subject
+											, WRTR writer
+											, CONT content
+											, LIKE_CNT likeCount
+											, WRT_DATE writeDate
+									FROM		BOARD
+									WHERE	1 = 1
+									<if test="keyword != null">
+									AND	SUBJECT LIKE '%' || #{keyword} || '%'
+									</if>
+									<if test="writer != null">
+									AND	WRTR LIKE '%' || #{writer} || '%'
+									</if>
+									<if test="content != null">
+									AND	CONT LIKE '%' || #{content} || '%'
+									</if>
+									
+									ORDER	BY BOARD_ID DESC
+								) A
+						WHERE	ROWNUM <![CDATA[ <= ]]> #{endArticleNumber}
+					)
+			WHERE	RNUM >= #{startArticleNumber}
+		</select>
+		
+		<resultMap type="BoardVO" id="boardMap">
+			<id column="BOARD_ID" property="boardId" />
+			<result column="SUBJECT" property="subject" />
+			<result column="WRTR" property="writer" />
+			<result column="CONT" property="content" />
+			<result column="LIKE_CNT" property="likeCount" />
+			<result column="WRT_DATE" property="writeDate" />
+			<result column="DSPLY_FL_NM" property="displayFileName" />
+			<result column="RL_FL_NM" property="realFileName" />
+			<association javaType="UserVO" property="userVO"> 
+				<id column="USR_ID" property="userId" />
+				<result column="USR_NM" property="userName" />
+				<result column="JOIN_DT" property="joinDate" />
+			</association> 
+		</resultMap>
+		<select id="getOneArticle" parameterType="_int" resultMap="boardMap">
 			SELECT	/*[BoardDao][getOneArticle]*/
-					BOARD_ID boardId
-					, SUBJECT subject
-					, WRTR writer
-					, CONT content
-					, LIKE_CNT likeCount
-					, WRT_DATE writeDate
-			FROM		BOARD
-			WHERE	BOARD_ID = #{boardId}
+					B.BOARD_ID
+					, B.SUBJECT
+					, B.WRTR
+					, B.CONT
+					, B.LIKE_CNT
+					, B.WRT_DATE
+					, B.DSPLY_FL_NM
+					, B.RL_FL_NM
+					, U.USR_ID
+					, U.USR_NM
+					, U.JOIN_DT
+			FROM		BOARD B
+					, USERS U
+			WHERE	B.WRTR = U.USR_ID
+			AND		BOARD_ID = #{boardId}
 		</select>
 	
 		<insert id="insertArticle" parameterType="BoardVO">
@@ -36,6 +93,12 @@
 									, CONT
 									, LIKE_CNT
 									, WRT_DATE
+									<if test="displayFileName != null">
+									, DSPLY_FL_NM
+									</if>
+									<if test="realFileName != null">
+									, RL_FL_NM
+									</if>
 								)
 			VALUES				(
 									BOARD_ID_SEQ.NEXTVAL
@@ -44,6 +107,12 @@
 									, #{content}
 									, 0
 									, SYSDATE
+									<if test="displayFileName != null">
+									, #{displayFileName}
+									</if>
+									<if test="realFileName != null">
+									, #{realFileName}
+									</if>
 								)
 		</insert>
 		

@@ -22,11 +22,11 @@ public class BoardServiceImplTest {
 	@Autowired	//변수의 이름이 같은 변수를 bean컨테이너에서 가져와라 라는 의미이다.
 	private BoardService boardServiceImpl;
 	
-	@Test
+	/*@Test
 	public void getAllArticle() {
 		List<BoardVO> boardList = boardServiceImpl.getAllArticle();
 		assertTrue(boardList.size() > 0);
-	}
+	}*/
 	
 	/*@Test(expected=NumberFormatException.class) //이 에러가 나야 정상이야. 라고 말해주는 소스
 	public void getAllArticleThrowNumberFormatException() {

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+		
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="com.ktds.khw.board.vo.BoardVO" alias="BoardVO"/>
+		<typeAlias type="com.ktds.khw.board.vo.BoardSearchVO" alias="BoardSearchVO"/>
+		<typeAlias type="com.ktds.khw.user.vo.UserVO" alias="UserVO"/>
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="com/ktds/khw/board/dao/sql/boardDaoSql.xml" />
+		<mapper resource="com/ktds/khw/user/dao/sql/userDaoSql.xml"/>
+	</mappers>
+
+</configuration>

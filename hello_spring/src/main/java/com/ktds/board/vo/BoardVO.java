@@ -4,6 +4,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ktds.user.vo.UserVO;
+
 public class BoardVO {
 
 	private int boardId;
@@ -20,9 +22,38 @@ public class BoardVO {
 	private int likeCount;
 	private String writeDate;
 	private String ip;
-
+	private String realFileName;
+	private String displayFileName;
+	
+	
 	private MultipartFile file;
 	
+	private UserVO userVO;
+	
+	public String getRealFileName() {
+		return realFileName;
+	}
+
+	public void setRealFileName(String realFileName) {
+		this.realFileName = realFileName;
+	}
+
+	public String getDisplayFileName() {
+		return displayFileName;
+	}
+
+	public void setDisplayFileName(String displayFileName) {
+		this.displayFileName = displayFileName;
+	}
+
+	public UserVO getUserVO() {
+		return userVO;
+	}
+
+	public void setUserVO(UserVO userVO) {
+		this.userVO = userVO;
+	}
+
 	public int getBoardId() {
 		return boardId;
 	}

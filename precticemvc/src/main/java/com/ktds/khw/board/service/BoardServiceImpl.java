@@ -1,8 +1,8 @@
 package com.ktds.khw.board.service;
 
-import java.util.List;
-
 import com.ktds.khw.board.biz.BoardBiz;
+import com.ktds.khw.board.vo.BoardListVO;
+import com.ktds.khw.board.vo.BoardSearchVO;
 import com.ktds.khw.board.vo.BoardVO;
 
 public class BoardServiceImpl implements  BoardService{
@@ -14,8 +14,8 @@ public class BoardServiceImpl implements  BoardService{
 	}
 	
 	@Override
-	public List<BoardVO> getAllArticles() {
-		return boardBiz.getAllArticles();
+	public BoardListVO getAllArticles(BoardSearchVO boardSearchVO) {
+		return boardBiz.getAllArticles(boardSearchVO);
 	}
 
 	@Override

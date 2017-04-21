@@ -22,6 +22,7 @@
 	</bean>
 	
 	<bean id="khwController" class="com.ktds.khw.KhwController"></bean>
+	
 	<bean id="boardController" class="com.ktds.khw.board.web.BoardController">
 		<property name="boardService" ref="boardServiceImpl"></property>
 	</bean>

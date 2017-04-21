@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="ClubDao">
+	
+	<resultMap type="ClubVO" id="clubMap">
+		<id column="AR_ID" property="articleId"/>
+		<result column="SBJ" property="subject"/>
+		<result column="CONT" property="content"/>
+		<result column="C_MBR_ID" property="memberId"/>
+		<result column="CRT_DT" property="createData"/>
+		<result column="MDFY_DT" property="modifyData"/>
+		<result column="RD_CNT" property="readCount"/>
+		<result column="C_MN_ID" property="menuId"/>
+		<association property="memberVO" javaType="MemberVO">
+			<id column="MBR_ID" property="memberId"/>
+			<result column="NCK_NM" property="nickName"/>
+			<result column="AUTH" property="auth"/>
+		</association>
+		<association property="menuVO" javaType="MenuVO">
+			<id column="MN_ID" property="menuId"/>
+			<result column="MN_NM" property="menuName"/>
+			<result column="PRNT_MN_ID" property="parentMenuId"/>
+			<result column="MN_AUTH" property="auth"/>
+		</association>
+	</resultMap>
+	
+		<select id="selectAllClub" resultMap="clubMap" parameterType="ClubSearchVO">
+			<include refid="CommonDao.PAGING_HEADER" />
+			SELECT	C.AR_ID
+					, C.SBJ
+					, C.CONT
+					, C.MBR_ID C_MBR_ID
+					, C.CRT_DT
+					, C.MDFY_DT
+					, C.RD_CNT
+					, C.MN_ID C_MN_ID
+					, M.MBR_ID
+					, M.NCK_NM
+					, M.AUTH
+					, MN.MN_ID
+					, MN.MN_NM
+					, MN.PRNT_MN_ID
+					, MN.AUTH MN_AUTH
+			FROM		CLB C
+					, MBR M
+					, MN
+			WHERE	C.MBR_ID = M.MBR_ID
+			AND		MN.AUTH = M.AUTH
+			AND		MN.MN_ID = C.MN_ID
+			AND		MN.MN_ID = #{menuId}
+			<if test="subjectKeyword != null and subjectKeyword != ''">
+			AND		C.SBJ LIKE '%' || #{subjectKeyword} || '%'
+			</if>
+			ORDER	BY MDFY_DT DESC, AR_ID DESC
+			<include refid="CommonDao.PAGING_FOOTER"></include>
+		</select>
+		
+		<select id="selectAllClubCount" resultType="_int" parameterType="ClubSearchVO">
+			SELECT	COUNT(1)
+			FROM		CLB C
+					, MBR M
+					, MN
+			WHERE	C.MBR_ID = M.MBR_ID
+			AND		MN.AUTH = M.AUTH
+			AND		MN.MN_ID = C.MN_ID
+			AND		MN.MN_ID = #{menuId}
+			<if test="subjectKeyword != null and subjectKeyword != ''">
+			AND		C.SBJ LIKE '%' || #{subjectKeyword} || '%'
+			</if>
+			<!-- <if test="searchType == 1" >
+				<if test="searchKeyword != null and searchKeyword != ''">
+			AND		(
+					C.SBJ LIKE '%' || #{searchKeyword} || '%'
+			OR		C.CONT LIKE '%' || #{searchKeyword} || '%'
+			)
+				</if>
+			</if>
+			
+			<if test="searchType == 2" >
+				<if test="searchKeyword != null and searchKeyword != ''">
+			AND		C.SBJ LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if>
+			<if test="searchType == 3">
+				<if test="searchKeyword != null and searchKeyword != ''">
+			AND		C.CONT LIKE '%' || #{searchKeyword} || '%'
+				</if>
+			</if> -->
+		</select>
+		
+
+		<insert id="insertNewClub" parameterType="ClubVO">
+			INSERT INTO CLB	(
+								AR_ID
+								, SBJ
+								, CONT
+								, MBR_ID
+								, CRT_DT
+								, MDFY_DT
+								, RD_CNT
+								, MN_ID
+							)
+			VALUES			(
+								'AR-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(AR_ID_SEQ.NEXTVAL, '6', 0)
+								, #{subject}
+								, #{content}
+								, #{memberId}
+								, SYSDATE
+								, SYSDATE
+								, 0
+								, #{menuId}
+							)
+		</insert>
+		
+		
+		
+		<select id="selectOneClub" parameterType="ClubVO" resultMap="clubMap">
+			SELECT	C.AR_ID
+					, C.SBJ
+					, C.CONT
+					, C.MBR_ID C_MBR_ID
+					, C.CRT_DT
+					, C.MDFY_DT
+					, C.RD_CNT
+					, C.MN_ID C_MN_ID
+					, M.MBR_ID
+					, M.NCK_NM
+					, M.AUTH
+					, MN.MN_ID
+					, MN.MN_NM
+					, MN.PRNT_MN_ID
+					, MN.AUTH MN_AUTH
+			FROM		CLB C
+					, MBR M
+					, MN
+			WHERE	C.MBR_ID = M.MBR_ID
+			AND		MN.AUTH = M.AUTH
+			AND		MN.MN_ID = C.MN_ID
+			AND		C.AR_ID = #{articleId}
+		</select>
+		
+	</mapper>
+	
+	

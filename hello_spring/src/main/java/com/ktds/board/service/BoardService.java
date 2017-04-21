@@ -1,12 +1,12 @@
 package com.ktds.board.service;
 
-import java.util.List;
-
+import com.ktds.board.vo.BoardListVO;
+import com.ktds.board.vo.BoardSearchVO;
 import com.ktds.board.vo.BoardVO;
 
 public interface BoardService {
 
-	public List<BoardVO> getAllArticle();
+	public BoardListVO getAllArticle(BoardSearchVO boardSearchVO);
 	
 	public BoardVO selectOneArticle(int boardId);
 	

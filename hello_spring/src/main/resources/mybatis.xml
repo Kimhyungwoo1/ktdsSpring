@@ -6,6 +6,7 @@
 
 	<typeAliases>
 		<typeAlias type="com.ktds.board.vo.BoardVO" alias="BoardVO"/>
+		<typeAlias type="com.ktds.board.vo.BoardSearchVO" alias="BoardSearchVO"/>
 		<typeAlias type="com.ktds.user.vo.UserVO" alias="UserVO"/>
 	</typeAliases>
 
