@@ -13,4 +13,6 @@ public interface ClubService {
 	public boolean addNewClub(ClubVO newClubVO);
 	
 	public Map<String, Object> getOneClub(ClubVO clubVO);
+	
+	public boolean addReadCount(ClubVO clubVO);
 }

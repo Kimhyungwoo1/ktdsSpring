@@ -11,4 +11,6 @@ public interface ClubBiz {
 	public boolean addNewClub(ClubVO newClubVO);
 	
 	public ClubVO getOneClub(ClubVO clubVO);
+	
+	public boolean addReadCount(ClubVO clubVO);
 }

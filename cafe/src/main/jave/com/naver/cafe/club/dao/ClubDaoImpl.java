@@ -29,4 +29,9 @@ public class ClubDaoImpl extends SqlSessionDaoSupport implements ClubDao{
 		return getSqlSession().selectOne(NS + ".selectOneClub", clubVO);
 	}
 
+	@Override
+	public int updateReadCount(ClubVO clubVO) {
+		return getSqlSession().update(NS + ".updateReadCount", clubVO);
+	}
+
 }

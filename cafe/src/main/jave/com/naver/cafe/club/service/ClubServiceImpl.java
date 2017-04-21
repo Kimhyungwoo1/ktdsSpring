@@ -9,11 +9,17 @@ import com.naver.cafe.club.vo.ClubSearchVO;
 import com.naver.cafe.club.vo.ClubVO;
 import com.naver.cafe.menu.biz.MenuBiz;
 import com.naver.cafe.menu.vo.MenuSearchVO;
+import com.naver.cafe.reply.biz.ReplyBiz;
 
 public class ClubServiceImpl implements ClubService{
 
 	private MenuBiz menuBiz;
 	private ClubBiz clubBiz;
+	private ReplyBiz replyBiz;
+	
+	public void setReplyBiz(ReplyBiz replyBiz) {
+		this.replyBiz = replyBiz;
+	}
 	
 	public void setClubBiz(ClubBiz clubBiz) {
 		this.clubBiz = clubBiz;
@@ -58,6 +64,11 @@ public class ClubServiceImpl implements ClubService{
 		club.put("currentMenu", menuBiz.getAllMenu(menuSearchVO) );
 		
 		return club;
+	}
+
+	@Override
+	public boolean addReadCount(ClubVO clubVO) {
+		return clubBiz.addReadCount(clubVO);
 	}
 	
 }

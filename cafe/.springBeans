@@ -9,6 +9,7 @@
 	<configs>
 		<config>src/main/webapp/WEB-INF/spring/menuContext.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/clubContext.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/replyContext.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

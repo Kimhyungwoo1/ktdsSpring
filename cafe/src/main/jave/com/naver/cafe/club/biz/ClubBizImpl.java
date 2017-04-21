@@ -40,4 +40,9 @@ public class ClubBizImpl implements ClubBiz{
 		return clubDao.selectOneClub(clubVO);
 	}
 
+	@Override
+	public boolean addReadCount(ClubVO clubVO) {
+		return clubDao.updateReadCount(clubVO) > 0;
+	}
+
 }

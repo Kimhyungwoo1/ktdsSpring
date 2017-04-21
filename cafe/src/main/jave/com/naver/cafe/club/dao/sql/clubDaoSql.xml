@@ -141,6 +141,12 @@
 			AND		C.AR_ID = #{articleId}
 		</select>
 		
+		<update id="updateReadCount" parameterType="ClubVO">
+			UPDATE	CLB
+			SET		RD_CNT = RD_CNT + 1
+			WHERE	AR_ID = #{articleId}
+		</update>
+		
 	</mapper>
 	
 	

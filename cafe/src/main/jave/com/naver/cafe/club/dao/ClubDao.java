@@ -16,4 +16,6 @@ public interface ClubDao {
 	public int insertNewClub(ClubVO newClubVO);
 	
 	public ClubVO selectOneClub(ClubVO clubVO);
+	
+	public int updateReadCount(ClubVO clubVO);
 }

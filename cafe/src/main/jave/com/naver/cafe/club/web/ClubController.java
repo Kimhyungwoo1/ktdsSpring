@@ -81,6 +81,13 @@ public class ClubController {
 	//read에서 조회수를 증가시키는 일만 한다.
 	@RequestMapping("/club/read/{menuId}/{id}")
 	public String viewReadDetailPage(@PathVariable String menuId, @PathVariable String id) {
+		
+		ClubVO clubVO = new ClubVO();
+		clubVO.setMenuId(menuId);
+		clubVO.setArticleId(id);
+		
+		boolean isSuccess = clubService.addReadCount(clubVO);
+		
 		return "redirect:/club/detail/" + menuId + "/" + id;
 	}
 	
