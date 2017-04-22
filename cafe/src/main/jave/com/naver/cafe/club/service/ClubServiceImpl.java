@@ -52,8 +52,12 @@ public class ClubServiceImpl implements ClubService{
 
 	@Override
 	public Map<String, Object>getOneClub(ClubVO clubVO) {
+		
+		ClubVO clubVOs = clubBiz.getOneClub(clubVO);
+		clubVOs.setReplyVO(replyBiz.getReplies(clubVO.getArticleId()));
+		
 		Map<String, Object> club = new HashMap<String, Object>();
-		club.put("club", clubBiz.getOneClub(clubVO));
+		club.put("club", clubVOs);
 		
 		MenuSearchVO menuSearchVO = new MenuSearchVO();
 		menuSearchVO.setAuth("ADM");

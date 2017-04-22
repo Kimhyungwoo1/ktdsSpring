@@ -39,7 +39,10 @@
 			<c:forEach items="${clubList}" var="club">
 				<tr>
 					<td>${club.articleId}</td>
-					<td><a href="<c:url value="/club/read/${menuId}/${club.articleId}"/> ">${club.subject}</a></td>
+					<td>
+						<a href="<c:url value="/club/read/${menuId}/${club.articleId}"/> ">${club.subject}</a>
+						(${club.repliesCount})
+					</td>
 					<td>${club.memberVO.nickName}</td>
 					<td>${club.createData}</td>
 					<td>${club.readCount}</td>

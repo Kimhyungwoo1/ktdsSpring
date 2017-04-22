@@ -15,6 +15,12 @@
 	<mvc:resources location="/WEB-INF/resources/css/" mapping="/static/css/**" />
 	<mvc:resources location="/WEB-INF/resources/img/" mapping="/static/img/**" />
 	
+	<mvc:interceptors>
+		<bean id="authInterceptor" class="com.naver.cafe.common.interceptor.AuthInterceptor">
+			<property name="menuBiz" ref="menuBizImpl" />
+		</bean>
+	</mvc:interceptors>
+	
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
 	
 	</bean>

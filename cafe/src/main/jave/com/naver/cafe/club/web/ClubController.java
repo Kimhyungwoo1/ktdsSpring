@@ -25,6 +25,7 @@ import com.naver.cafe.club.service.ClubService;
 import com.naver.cafe.club.vo.ClubListVO;
 import com.naver.cafe.club.vo.ClubSearchVO;
 import com.naver.cafe.club.vo.ClubVO;
+import com.naver.cafe.common.Auth;
 import com.naver.cafe.common.DownloadUtil;
 import com.naver.cafe.common.web.ListPageExplorer;
 import com.naver.cafe.menu.vo.MenuVO;
@@ -40,6 +41,8 @@ public class ClubController {
 		this.clubService = clubService;
 	}
 	
+	//@Auth("{USR , U_2}")		//2개 이상 줄때
+	@Auth("USR")
 	@RequestMapping("/club/{menuId}")
 	public ModelAndView viewClubListPage(@PathVariable String menuId, ClubSearchVO clubSearchVO, HttpSession session) {
 		
@@ -73,11 +76,13 @@ public class ClubController {
 		return view;
 	}
 	
+	@Auth("USR")
 	@RequestMapping("/club/{menuId}/init")
 	public String viewClubListInitPage(@PathVariable String menuId, HttpSession session) {
 		session.removeAttribute("_SEARCH_");
 		return "redirect:/club/" + menuId;
 	}
+	@Auth("USR")
 	//read에서 조회수를 증가시키는 일만 한다.
 	@RequestMapping("/club/read/{menuId}/{id}")
 	public String viewReadDetailPage(@PathVariable String menuId, @PathVariable String id) {
@@ -91,6 +96,7 @@ public class ClubController {
 		return "redirect:/club/detail/" + menuId + "/" + id;
 	}
 	
+	@Auth("USR")
 	@RequestMapping("/club/detail/{menuId}/{id}")
 	public ModelAndView viewDetailPage(@PathVariable String menuId, @PathVariable String id) {
 		ModelAndView view = new ModelAndView();
@@ -114,6 +120,7 @@ public class ClubController {
 		
 		return view;
 	}
+	@Auth("ADM")
 	@RequestMapping(value="/club/write/{menuId}", method=RequestMethod.GET)
 	public ModelAndView viewWriteArticlePage(@PathVariable String menuId) {
 		ModelAndView view = new ModelAndView();
@@ -122,6 +129,7 @@ public class ClubController {
 		return view;
 		
 	}
+	@Auth("USR")
 	@RequestMapping(value="/club/write/{menuId}", method=RequestMethod.POST)
 	public String doWriteArticleAction(@PathVariable String menuId, ClubVO clubVO) {
 		
@@ -133,7 +141,7 @@ public class ClubController {
 		return "redirect:/club/" + menuId;
 		
 	}
-	
+	@Auth("USR")
 	@RequestMapping(value="/club/upload", method=RequestMethod.POST)
 	public void doUploadFile(MultipartHttpServletRequest request, HttpServletResponse response) {
 		
@@ -169,6 +177,7 @@ public class ClubController {
 		}
 		
 	}
+	@Auth("USR")
 	@RequestMapping("/club/download/{fileName}")
 	public void downloadAttachedFile(@PathVariable String fileName
 			, HttpServletRequest request, HttpServletResponse response){

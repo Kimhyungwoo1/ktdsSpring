@@ -37,7 +37,30 @@ div.cke_pagebreak{background:url("<c:url value="/static/js/ckeditor/plugins/page
 	${clubList.subject} || 작성일 : ${clubList.createData}
 	<hr/>
 	${clubList.content}
-
+	<hr/>
+	
+	<c:set var="depth" value="0"/>
+	<ul>
+		<c:forEach items="${clubList.replyVO}" var="reply">
+			<c:if test="${reply.level < prevLevel }">
+				<c:forEach var="i" begin="0" end="${(prevLevel - reply.level) -1 }" step="1">
+					<c:set var="depth" value="${depth - 1 }" />
+					</ul>
+				</c:forEach>
+			</c:if>
+			<c:if test="${reply.level > prevLevel}">
+				<c:set var="depth" value="${depth + 1 }" />
+				<ul>
+			</c:if>
+				<li>${reply.content}</li>
+			<c:set var="prevLevel" value="${reply.level}" /> <!--현재 level 변수 지정  -->
+		</c:forEach>
+	</ul>
+	<c:if test="${depth > 0}" >
+		<c:forEach var="i" begin="0" end="${depth}" step="1">
+		</ul>
+		</c:forEach>
+	</c:if>
 	<a href="<c:url value="/club/${menuId}"/>">목록보기</a>
 
 </body>

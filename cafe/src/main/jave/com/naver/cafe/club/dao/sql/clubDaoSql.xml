@@ -24,6 +24,9 @@
 			<result column="PRNT_MN_ID" property="parentMenuId"/>
 			<result column="MN_AUTH" property="auth"/>
 		</association>
+		
+		<association select="ReplyDao.selectRepliesCount" property="repliesCount" column="AR_ID" javaType="_int" />
+		
 	</resultMap>
 	
 		<select id="selectAllClub" resultMap="clubMap" parameterType="ClubSearchVO">

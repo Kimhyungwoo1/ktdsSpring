@@ -60,13 +60,15 @@
 	}*/
 
 </style>
-
+<c:set var="depth" value="0"/>
 <ul>
 	<c:forEach items="${menu}" var="menuItem">
 		<c:if test="${menuItem.level < prevLevel }">
+			<c:set var="depth" value="${depth - 1 }" />
 			</ul>
 		</c:if>
 		<c:if test="${menuItem.level > prevLevel}">
+			<c:set var="depth" value="${depth + 1 }" />
 			<ul>
 		</c:if>
 			<li><a href="<c:url value="${menuItem.menuUrl}"/>">${menuItem.menuName}</a></li>

@@ -1,7 +1,10 @@
 package com.naver.cafe.club.vo;
 
+import java.util.List;
+
 import com.naver.cafe.member.vo.MemberVO;
 import com.naver.cafe.menu.vo.MenuVO;
+import com.naver.cafe.reply.vo.ReplyVO;
 
 public class ClubVO {
 
@@ -13,9 +16,28 @@ public class ClubVO {
 	private String modifyData;
 	private int readCount;
 	private String menuId;
-
+	
 	private MemberVO memberVO;
 	private MenuVO menuVO;
+	
+	private List<ReplyVO> replyVO;
+	private int repliesCount;
+	
+	public void setRepliesCount(int repliesCount) {
+		this.repliesCount = repliesCount;
+	}
+	
+	public int getRepliesCount() {
+		return repliesCount;
+	}
+	
+	public void setReplyVO(List<ReplyVO> replyVO) {
+		this.replyVO = replyVO;
+	}
+	
+	public List<ReplyVO> getReplyVO() {
+		return replyVO;
+	}
 
 	public String getArticleId() {
 		return articleId;
