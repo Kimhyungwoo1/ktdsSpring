@@ -3,11 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="clubServiceImpl" class="com.naver.cafe.club.service.ClubServiceImpl">
+	<!-- <bean id="clubServiceImpl" class="com.naver.cafe.club.service.ClubServiceImpl">
 		<property name="menuBiz" ref="menuBizImpl"></property>
 		<property name="clubBiz" ref="clubBizImpl"></property>
 		<property name="replyBiz" ref="replyBizImpl"></property>
-	</bean>
+	</bean>  -->
 
 	<bean id="replyDaoImpl" class="com.naver.cafe.reply.dao.ReplyDaoImpl">
 		<property name="sqlSessionTemplate" ref="sqlSessionTemplate"></property>
@@ -16,7 +16,6 @@
 	<bean id="replyBizImpl" class="com.naver.cafe.reply.biz.ReplyBizImpl">
 		<property name="replyDao" ref="replyDaoImpl"></property>
 	</bean>
-	
 	
 
 </beans>

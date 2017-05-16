@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+
+#signUpForm {
+	width : 200px;
+	height : 200px;
+	text-align: center;
+	border: 1px solid #333;
+	margin : 0 auto;
+	display: table;
+	
+}
+
+#signUp {
+	display : table-cell;
+	vertical-align : middle;
+}

@@ -8,4 +8,5 @@ public interface UserBiz {
 	
 	public boolean insertUser (UserVO userVO);
 	
+	public String getSaltByInfo(String userId);
 }

@@ -17,5 +17,10 @@ public class ReplyBizImpl implements ReplyBiz{
 	public List<ReplyVO> getReplies(String articleId) {
 		return replyDao.selectAllReplies(articleId);
 	}
+
+	@Override
+	public boolean addReply(ReplyVO replyVO) {
+		return replyDao.insertReply(replyVO) > 0;
+	}
 	
 }

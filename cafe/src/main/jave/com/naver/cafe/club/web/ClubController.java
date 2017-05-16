@@ -28,7 +28,9 @@ import com.naver.cafe.club.vo.ClubVO;
 import com.naver.cafe.common.Auth;
 import com.naver.cafe.common.DownloadUtil;
 import com.naver.cafe.common.web.ListPageExplorer;
+import com.naver.cafe.member.vo.MemberVO;
 import com.naver.cafe.menu.vo.MenuVO;
+import com.naver.cafe.reply.vo.ReplyVO;
 
 @Controller
 public class ClubController {
@@ -46,6 +48,9 @@ public class ClubController {
 	@RequestMapping("/club/{menuId}")
 	public ModelAndView viewClubListPage(@PathVariable String menuId, ClubSearchVO clubSearchVO, HttpSession session) {
 		
+		MemberVO user = (MemberVO) session.getAttribute("_USER_");
+		
+		
 		if ( clubSearchVO.getPageNo() == null || clubSearchVO.getPageNo().length() == 0) {
 			
 			ClubSearchVO clubSearchVOInSession = (ClubSearchVO) session.getAttribute("_SEARCH_");
@@ -56,7 +61,7 @@ public class ClubController {
 		}
 		
 		clubSearchVO.setMenuId(menuId);
-		ClubListVO clubListVO = clubService.getAllClub(clubSearchVO);
+		ClubListVO clubListVO = clubService.getAllClub(clubSearchVO, user);
 		
 		session.setAttribute("_SEARCH_", clubSearchVO); 		//가장 마지막에 들어온 페이지가 세션에 
 															//저장이 되어서 뒤로를 눌러도 페이지가 초기화가 안된다.
@@ -64,6 +69,7 @@ public class ClubController {
 		ModelAndView view = new ModelAndView();
 		view.addObject("menu", clubListVO.getMenuList());
 		view.addObject("clubList", clubListVO.getClubList());
+		logger.info(clubSearchVO.getMenuId());
 		view.addObject("totalCount", clubListVO.getPager().getTotalArticleCount());
 		view.addObject("currentMenu", clubListVO.getCurrentMenu());
 		view.addObject("menuId", menuId);
@@ -98,9 +104,12 @@ public class ClubController {
 	
 	@Auth("USR")
 	@RequestMapping("/club/detail/{menuId}/{id}")
-	public ModelAndView viewDetailPage(@PathVariable String menuId, @PathVariable String id) {
+	public ModelAndView viewDetailPage(@PathVariable String menuId, HttpSession session ,@PathVariable String id) {
 		ModelAndView view = new ModelAndView();
 		view.addObject("menuId", menuId);
+		view.addObject("articleId", id);
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("_USER_");
 		
 		view.setViewName("club/detail");
 		
@@ -108,19 +117,21 @@ public class ClubController {
 		clubVO.setArticleId(id);
 		clubVO.setMenuId(menuId);
 		
-		Map<String, Object> club = clubService.getOneClub(clubVO);
+		Map<String, Object> club = clubService.getOneClub(clubVO, memberVO);
 		ClubVO clubVOs = (ClubVO) club.get("club");
 		List<MenuVO> allMenu = (List<MenuVO>) club.get("menu");
 		List<MenuVO> currentMenu = (List<MenuVO>) club.get("currentMenu");
+		List<ReplyVO> allReply = (List<ReplyVO>) club.get("replyList");
 		
 		view.addObject("clubList", clubVOs);
 		view.addObject("menu", allMenu);
 		view.addObject("currentMenu", currentMenu);
-		
+		view.addObject("allReply", allReply);
 		
 		return view;
 	}
-	@Auth("ADM")
+	
+	@Auth("USR")
 	@RequestMapping(value="/club/write/{menuId}", method=RequestMethod.GET)
 	public ModelAndView viewWriteArticlePage(@PathVariable String menuId) {
 		ModelAndView view = new ModelAndView();
@@ -191,4 +202,33 @@ public class ClubController {
 		}
 		
 	}
+	
+	@RequestMapping(value="/club/replyWrite/{menuId}/{articleId}", method=RequestMethod.GET)
+	public ModelAndView viewWriteReplyPage(@PathVariable String menuId, @PathVariable String articleId) {
+		ModelAndView view = new ModelAndView();
+		
+		view.setViewName("club/replywrite");
+		
+		return view;
+	}
+	
+	@Auth("USR")
+	@RequestMapping(value="/club/replyWrite/{menuId}/{articleId}", method=RequestMethod.POST)
+	public String doWriteReplyAction(@PathVariable String menuId, HttpSession session, 
+					@PathVariable String articleId, ReplyVO replyVO) {
+		
+		MemberVO memberVO = (MemberVO) session.getAttribute("_USER_");
+		
+		replyVO.setArticleId(articleId);
+		replyVO.setMemberId(memberVO.getMemberId());
+		
+		boolean isSuccess = clubService.addReply(replyVO);
+		logger.info("댓글 페이지에 들어왔다.");
+		
+		if(isSuccess) {
+			return "redirect:/club/detail/" + menuId + "/" + articleId;
+		}
+		return "redirect:/club/detail/" + menuId + "/" + articleId;
+	}
+	
 }

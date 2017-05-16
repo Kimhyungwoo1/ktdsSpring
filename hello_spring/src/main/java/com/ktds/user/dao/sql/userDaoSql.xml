@@ -20,13 +20,20 @@
 								, USR_NM
 								, USR_PWD
 								, JOIN_DT
+								, SALT
 							)
 		VALUES				(
 								 #{userId}
 								, #{userName}
 								, #{userPassword}
 								, SYSDATE
+								, #{salt}
 							)
 	</insert>
 	
+	<select id="getSaltById" parameterType="string" resultType="string">
+		SELECT	SALT
+		FROM		USERS
+		WHERE	USR_ID = #{userId}
+	</select>
 </mapper>

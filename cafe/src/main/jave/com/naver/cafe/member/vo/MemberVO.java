@@ -6,6 +6,15 @@ public class MemberVO {
 	private String nickName;
 	private String memberPassword;
 	private String auth;
+	private String salt;
+	
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
 
 	public String getMemberId() {
 		return memberId;

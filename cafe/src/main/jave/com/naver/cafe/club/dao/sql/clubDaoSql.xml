@@ -31,7 +31,8 @@
 	
 		<select id="selectAllClub" resultMap="clubMap" parameterType="ClubSearchVO">
 			<include refid="CommonDao.PAGING_HEADER" />
-			SELECT	C.AR_ID
+			SELECT	/*[cafeDao][selectAllClub]*/
+					C.AR_ID
 					, C.SBJ
 					, C.CONT
 					, C.MBR_ID C_MBR_ID
@@ -61,7 +62,8 @@
 		</select>
 		
 		<select id="selectAllClubCount" resultType="_int" parameterType="ClubSearchVO">
-			SELECT	COUNT(1)
+			SELECT	/*[cafeDao][selectAllClubCount]*/
+					COUNT(1)
 			FROM		CLB C
 					, MBR M
 					, MN
@@ -95,7 +97,7 @@
 		
 
 		<insert id="insertNewClub" parameterType="ClubVO">
-			INSERT INTO CLB	(
+			INSERT INTO CLB	(	/*[cafeDao][insertNewClub]*/
 								AR_ID
 								, SBJ
 								, CONT
@@ -120,7 +122,8 @@
 		
 		
 		<select id="selectOneClub" parameterType="ClubVO" resultMap="clubMap">
-			SELECT	C.AR_ID
+			SELECT	/*[cafeDao][selectOneClub]*/
+					C.AR_ID
 					, C.SBJ
 					, C.CONT
 					, C.MBR_ID C_MBR_ID
@@ -145,7 +148,8 @@
 		</select>
 		
 		<update id="updateReadCount" parameterType="ClubVO">
-			UPDATE	CLB
+			UPDATE	/*[cafeDao][updateReadCount]*/
+					CLB
 			SET		RD_CNT = RD_CNT + 1
 			WHERE	AR_ID = #{articleId}
 		</update>

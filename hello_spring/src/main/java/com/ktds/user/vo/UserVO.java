@@ -15,6 +15,16 @@ public class UserVO {
 	@Length(min=8, message="8자 이상 입력하세요.")
 	private String userPassword;
 	private String joinDate;
+	
+	private String salt;
+	
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	
+	public String getSalt() {
+		return salt;
+	}
 
 	public String getUserId() {
 		return userId;

@@ -12,6 +12,15 @@
 </head>
 <body>
 
+	<div>
+		<c:if test="${empty sessionScope._USER_ }">
+			<a href="<c:url value="/user/signin" /> ">SignIn</a>
+			<a href="<c:url value="/user/signup"/> ">SignUp</a>
+		</c:if>
+		<c:if test="${not empty sessionScope._USER_}" >
+			<a href="<c:url value="/user/signout" />">SignOut</a>
+		</c:if>
+	</div>
 	
 	<jsp:include page="/WEB-INF/view/common/menu.jsp" />
 	
@@ -57,6 +66,7 @@
 			</form>
 			<a href="<c:url value="/club/write/${menuId}"/>">글쓰기</a>
 	</div>
+	
 
 </body>
 </html>

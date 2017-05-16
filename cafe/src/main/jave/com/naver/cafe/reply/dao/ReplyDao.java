@@ -10,4 +10,5 @@ public interface ReplyDao {
 	
 	public List<ReplyVO> selectAllReplies(String articleId);
 	
+	public int insertReply(ReplyVO replyVO);
 }

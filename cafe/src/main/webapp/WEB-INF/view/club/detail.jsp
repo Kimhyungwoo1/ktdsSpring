@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="<c:url value="/static/js/jquery-3.1.1.min.js"/>"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value="/static/js/ckeditor/contents.css?t=H0CG"/>"/>
 <link type="text/css" rel="stylesheet" href="<c:url value="/static/js/ckeditor/plugins/copyformatting/styles/copyformatting.css"/>" />
 <style>
@@ -52,7 +53,7 @@ div.cke_pagebreak{background:url("<c:url value="/static/js/ckeditor/plugins/page
 				<c:set var="depth" value="${depth + 1 }" />
 				<ul>
 			</c:if>
-				<li>${reply.content}</li>
+				<li>${allReply.memberId} : ${allReply.content}</li>
 			<c:set var="prevLevel" value="${reply.level}" /> <!--현재 level 변수 지정  -->
 		</c:forEach>
 	</ul>
@@ -61,7 +62,10 @@ div.cke_pagebreak{background:url("<c:url value="/static/js/ckeditor/plugins/page
 		</ul>
 		</c:forEach>
 	</c:if>
+	
+	<jsp:include page="/WEB-INF/view/club/replywrite.jsp"></jsp:include>
 	<a href="<c:url value="/club/${menuId}"/>">목록보기</a>
+	
 
 </body>
 </html>

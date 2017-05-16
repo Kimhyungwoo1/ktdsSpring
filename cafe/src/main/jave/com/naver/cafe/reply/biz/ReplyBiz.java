@@ -8,4 +8,5 @@ public interface ReplyBiz {
 
 	public List<ReplyVO> getReplies(String articleId);
 	
+	public boolean addReply(ReplyVO replyVO);
 }

@@ -8,4 +8,5 @@ public interface UserDao {
 	
 	public int insertUser(UserVO userVO);
 	
+	public String getSaltById(String userId);
 }

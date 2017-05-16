@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="MemberDao">
+	
+		<insert id="insertMember" parameterType="MemberVO">
+			INSERT INTO MBR	(	/*[MemberDao][insertMember]*/
+								MBR_ID
+								, NCK_NM
+								, MBR_PWD
+								, AUTH
+								, SALT
+							) 
+			VALUES			(
+								#{memberId}
+								, #{nickName}
+								, #{memberPassword}
+								, #{auth}
+								, #{salt}
+							)
+		</insert>
+		
+		<resultMap type="MemberVO" id="MemberMap">
+			<id column="MBR_ID" property="memberId"/>
+			<result column="NCK_NM" property="nickName"/>
+			<result column="MBR_PWD" property="memberPassword"/>
+			<result column="AUTH" property="auth"/>
+		</resultMap>
+		
+		<select id="selectOneMember" parameterType="memberVO" resultMap="MemberMap">
+			SELECT	/*[MemberDao][selectOneMember]*/
+					MBR_ID
+					, NCK_NM
+					, MBR_PWD
+					, AUTH
+			FROM		MBR
+			WHERE	MBR_ID = #{memberId}
+			AND		MBR_PWD = #{memberPassword}
+		</select>
+		
+		<select id="getSalt" parameterType="string" resultType="string">
+			SELECT	/*[MemberDao][getSalt]*/
+					SALT
+			FROM		MBR
+			WHERE	MBR_ID = #{memberId}
+		</select>
+		
+		<update id="plusLoginFailCount" parameterType="string">
+			UPDATE	/*[MemberDao][plusLoginFailCount]*/
+					MBR
+			SET		LOGIN_FALE_COUNT = LOGIN_FALE_COUNT + 1
+					, LATEST_TRY_LOGIN_DATE = SYSDATE
+			WHERE	MBR_ID = #{memberId}
+		</update>
+		
+		<update id="updateLockStatus" parameterType="string">
+			UPDATE	/*[MemberDao][updateLockStatus]*/
+					MBR
+			SET		IS_LOCK = 'Y'
+					, LOCK_COUNT = LOCK_COUNT + 1
+			WHERE	MBR_ID = #{memberId}
+			AND		LOGIN_FALE_COUNT > 3
+		</update>
+		
+		<select id="selectLockStatus" parameterType="string" resultType="_int">
+			SELECT	/*[MemberDao][selectLockStatus]*/
+					COUNT(1) CNT
+			FROM		MBR
+			WHERE	MBR_ID = #{memberId}
+			AND		IS_LOCK = 'Y'
+			AND		LATEST_TRY_LOGIN_DATE + ( LOCK_COUNT / 24 / 60 ) > SYSDATE
+		</select>
+		
+		<update id="updateClearLoginFailCount" parameterType="string">
+			UPDATE	/*[MemberDao][updateClearLoginFailCount]*/
+					MBR
+			SET		LOGIN_FALE_COUNT = 0
+					, IS_LOCK = 'N'
+			WHERE	MBR_ID = #{memberId}
+			AND		IS_LOCK = 'Y'
+		</update>
+		
+		<update id="updateClearLockCount" parameterType="string">
+			UPDATE	/*[MemberDao][updateClearLockCount]*/
+					MBR
+			SET		LOCK_COUNT = 0
+			WHERE	MBR_ID = #{memberId}
+		</update>
+	
+	</mapper>

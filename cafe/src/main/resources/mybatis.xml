@@ -11,13 +11,14 @@
 		<typeAlias type="com.naver.cafe.club.vo.ClubVO" alias="ClubVO"/>
 		<typeAlias type="com.naver.cafe.club.vo.ClubSearchVO" alias="ClubSearchVO"/>
 		<typeAlias type="com.naver.cafe.reply.vo.ReplyVO" alias="ReplyVO"/>
-		
+		<typeAlias type="com.naver.cafe.member.vo.MemberVO" alias="MemberVO" />
 	</typeAliases>
 
 	<mappers>
 		<!-- Paging 관련 쿼리들이 있는 매퍼 -->
 		<mapper resource="commonDaoSql.xml" />
 		
+		<mapper resource="com/naver/cafe/member/dao/sql/memberDaoSql.xml" />
 		<mapper resource="com/naver/cafe/menu/dao/sql/menuDaoSql.xml" />
 		<mapper resource="com/naver/cafe/club/dao/sql/clubDaoSql.xml" />
 		<mapper resource="com/naver/cafe/reply/dao/sql/replyDaoSql.xml" />

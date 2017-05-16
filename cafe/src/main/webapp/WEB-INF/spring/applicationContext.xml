@@ -40,4 +40,8 @@
 		<property name="clubService" ref="clubServiceImpl"></property>
 	</bean>
 	
+	<bean id="memberController" class="com.naver.cafe.member.web.MemberController">
+		<property name="memberService" ref="memberServiceImpl"></property>
+	</bean>
+	
 </beans>

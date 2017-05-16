@@ -13,4 +13,9 @@ public class ReplyDaoImpl extends SqlSessionDaoSupport implements ReplyDao {
 		return getSqlSession().selectList(MS + ".selectAllReplies", articleId);
 	}
 
+	@Override
+	public int insertReply(ReplyVO replyVO) {
+		return getSqlSession().insert(MS + ".insertReply", replyVO);
+	}
+
 }

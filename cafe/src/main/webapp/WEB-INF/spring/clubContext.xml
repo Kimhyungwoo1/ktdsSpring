@@ -14,6 +14,7 @@
 	<bean id="clubServiceImpl" class="com.naver.cafe.club.service.ClubServiceImpl">
 		<property name="menuBiz" ref="menuBizImpl"></property>
 		<property name="clubBiz" ref="clubBizImpl"></property>
+		<property name="replyBiz" ref="replyBizImpl"></property>
 	</bean>
 
 

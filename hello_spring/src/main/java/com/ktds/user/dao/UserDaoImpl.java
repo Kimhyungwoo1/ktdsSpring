@@ -15,4 +15,9 @@ public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
 	public int insertUser(UserVO userVO) {
 		return getSqlSession().insert("UserDao.insertUser", userVO);
 	}
+
+	@Override
+	public String getSaltById(String userId) {
+		return getSqlSession().selectOne("UserDao.getSaltById", userId);
+	}
 }

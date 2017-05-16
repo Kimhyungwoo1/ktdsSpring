@@ -21,4 +21,9 @@ public class UserBizImpl implements UserBiz{
 		return userDao.insertUser(userVO) > 0;
 	}
 
+	@Override
+	public String getSaltByInfo(String userId) {
+		return userDao.getSaltById(userId);
+	}
+
 }

@@ -31,7 +31,8 @@
 	</select>
 	 -->
 	<select id="selectAllMenu" resultType="MenuVO" parameterType="MenuSearchVO">
-		SELECT	LEVEL
+		SELECT	/*[menuDao][selectAllMenu]*/
+				LEVEL
 				, MN_ID menuId
 				, MN_NM menuName
 				, PRNT_MN_ID parentMenuId
