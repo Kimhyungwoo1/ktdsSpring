@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- DormantAccountJob Scheduler -->
+	<bean id="dormantAccountDaoImpl" class="com.ktds.batch.account.dormant.dao.DormantAccountDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate"></property>
+	</bean>
+	
+	<bean id="dormantAccountBizImpl" class="com.ktds.batch.account.dormant.biz.DormantAccountBizImpl">
+		<property name="dormantAccountDao" ref="dormantAccountDaoImpl"></property>
+	</bean>
+	
+	<bean id="dormantAccountJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ktds.batch.account.dormant.DormantAccountJob"></property>
+	</bean>
+
+	<!-- job하나당 밑에꺼 하나 -->
+	<bean id="testJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.ktds.batch.test.TestJob"></property>
+	</bean>
+	
+	<!-- 반복 작업 상세 정의 -->
+	<bean id="dormantAccountJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<!-- 
+			CronTab
+			실행주기 설정
+		 -->
+		<property name="jobDetail" ref="dormantAccountJob" />
+										<!-- *:초 *:분 *:시 *:일 *:월 -->
+		<property name="cronExpression" value="0/5 * * * * ?"></property> <!-- 5초에 한번씩 실행 -->
+	</bean>
+	
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="dormantAccountJobTrigger" />
+			</list>
+		</property>
+		<property name="quartzProperties">
+			<props>
+				<!--Batch Job을 실행시킬 Thread Pool -->
+				<prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+				<!-- Batch Job 을 실행시킬 Thread의 수 -->
+				<prop key="org.quartz.threadPool.threadCount">3</prop>
+				<!-- Batch Job Thread 의 동작 우선 순위 -->
+				<prop key="org.quartz.threadPool.threadPriority">4</prop>
+				<!-- Batch Job Thread를 관리하는 방식 선택 (RAM) -->
+				<prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop>
+				<!-- 
+					Batch Job Thread 가 동하지 않을 때 대기하는 초(60초)
+					60초가 지나도 동작하지 않을 경우 Batch Job이 실행되자 않는다.
+				 -->
+				<prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>
