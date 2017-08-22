@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="AuthorDao">
+	
+		<insert id="insertNewAuthor" parameterType="AuthorVO">
+			INSERT	INTO ATHR (
+									ATHR_ID
+									, ATHR_NM
+									, INTRO
+								)
+			VALUES				(
+									'AT-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(ATHR_ID_SEQ.NEXTVAL, 6, '0')
+									, #{authorName}
+									, #{authorIntro}
+								)
+		</insert>
+		
+		<select id="selectAllAuthor" parameterType="AuthorSearchVO" resultType="AuthorVO">
+			<if test="check">
+				<include refid="CommonDao.PAGING_HEADER"></include>
+			</if>
+				SELECT	ATHR_ID authorId
+						, ATHR_NM authorName
+						, INTRO authorIntro
+				FROM		ATHR
+				<if test="!check">
+					ORDER	BY	ATHR_NM ASC
+				</if>
+				
+			<if test="check">
+			ORDER	BY	ATHR_ID DESC
+				<include refid="CommonDao.PAGING_FOOTER"></include>
+			</if>
+		</select>
+		
+		<select id="selectAllAuthorCount" parameterType="AuthorSearchVO" resultType="_int">
+			SELECT	COUNT(1)
+			FROM		ATHR
+		</select>
+		
+		<select id="selectOneAuthor" parameterType="string" resultType="AuthorVO">
+			SELECT	AUTH_ID authorId
+					, AUTH_NM authorName
+					, INTRO authorIntro
+			FROM		ATHR
+			WHERE	AUTH_ID = #{id}
+		</select>
+		
+		
+		
+	</mapper>
+	
+	

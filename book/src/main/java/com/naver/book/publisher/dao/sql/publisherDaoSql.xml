@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="PublisherDao">
+	
+		<insert id="insertNewPublisher" parameterType="PublisherVO">
+			INSERT	INTO PBLSHR (
+									PBLSHR_ID
+									, PBLSHR_NM
+								)
+			VALUES				(
+									'PB-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(PBLSHR_ID_SEQ.NEXTVAL, 6, '0')
+									, #{publisherName}
+								)
+		</insert>
+		<select id="selectAllPublisher" parameterType="PublisherSearchVO" resultType="PublisherVO">
+			<if test="check">
+				<include refid="CommonDao.PAGING_HEADER" />
+			</if>
+			
+			SELECT	PBLSHR_ID	publisherId
+					, PBLSHR_NM	publisherName
+			FROM		PBLSHR		
+			<if test="!check">
+				ORDER	BY	PBLSHR_NM ASC
+			</if>
+			<if test="check">
+			ORDER	BY PBLSHR_ID DESC
+				<include refid="CommonDao.PAGING_FOOTER" />
+			</if>
+		</select>
+		
+		<select id="selectAllPublisherCount" parameterType="PublisherSearchVO" resultType="_int">
+		
+		SELECT	COUNT(1)
+		FROM		PBLSHR
+		
+		</select>		
+	
+	</mapper>

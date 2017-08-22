@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="BookAuthDao">
+		
+		<insert id="insertNewBookAuthor" parameterType="BookAuthVO">
+		INSERT	INTO		BOOK_ATHR	(
+										BOOK_ATHR_ID
+										, BOOK_ID
+										, ATHR_ID
+									)
+		VALUES						(
+										'BA-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(BOOK_ATHR_ID_SEQ.NEXTVAL, 6, '0')
+										, #{bookId}
+										, #{authorId}
+									)
+	</insert>
+	
+	<select id="selectAuthorByBookId" parameterType="string" resultType="AuthorVO" >
+		SELECT	A.ATHR_ID authorId
+				, A.ATHR_NM authorName
+				, A.INTRO authorIntro
+		FROM		ATHR A
+				, BOOK_ATHR B
+		WHERE	A.ATHR_ID = B.ATHR_ID
+		AND		B.BOOK_ID = #{bookId}
+	</select>
+		
+	</mapper>
+	
+	

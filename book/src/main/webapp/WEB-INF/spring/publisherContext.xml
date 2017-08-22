@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="publisherDaoImpl" class="com.naver.book.publisher.dao.PublisherDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate"></property>
+	</bean>
+	
+	<bean id="publisherBizImpl" class="com.naver.book.publisher.biz.PublisherBizImpl">
+		<property name="publisherDao" ref="publisherDaoImpl"></property>
+	</bean>
+	
+	<bean id="publisherServiceImpl" class="com.naver.book.publisher.service.PublisherServiceImpl" >
+		<property name="publisherBiz" ref="publisherBizImpl"></property>
+	</bean>
+
+</beans>

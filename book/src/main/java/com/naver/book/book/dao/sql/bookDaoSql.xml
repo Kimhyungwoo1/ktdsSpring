@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="BookDao">
+	
+		<select id="generateBookPK" resultType="string">
+				SELECT	'BK-' || TO_CHAR(SYSDATE, 'YYYYMMDDHH24') || '-' || LPAD(BOOK_ID_SEQ.NEXTVAL, 6, '0')
+				FROM		DUAL
+		</select>
+	
+		<insert id="insertNewBook" parameterType="BookVO">
+			INSERT	INTO BOOK (
+									BOOK_ID
+									, BOOK_NM
+									, BOOK_SUB_NM
+									, RLS_DT
+									, ISBN
+									, PRICE
+									, INTRO
+									, IDX
+									, PBLSHR_ID
+								)
+			VALUES				(
+									#{bookId}
+									, #{bookName}
+									, #{bookSubName}
+									, #{releaseDate}
+									, #{isbn}
+									, #{price}
+									, #{bookIntro}
+									, #{index}
+									, #{publisherId}
+								)
+		</insert>
+		
+		<resultMap type="BookVO" id="bookVOMap">
+			<id column="BOOK_ID" property="bookId"/>
+			<result column="BOOK_NM" property="bookName"/>
+			<result column="BOOK_SUB_NM" property="bookSubName"/>
+			<result column="RLS_DT" property="releaseDate"/>
+			<result column="ISBN" property="isbn"/>
+			<result column="PRICE" property="price"/>
+			<result column="INTRO" property="bookIntro"/>
+			<result column="IDX" property="index"/>
+			<result column="B_PBLSHR_ID" property="publisherId"/>
+			<association property="publisherVO" javaType="PublisherVO">
+				<id column="PBLSHR_ID" property="publisherId"/>
+				<result column="PBLSHR_NM" property="publisherName"/>
+			</association>
+			<!-- 다 : 다 일경우 써야한다. -->
+			<collection property="authorList"
+						column="BOOK_ID"
+						select="BookAuthDao.selectAuthorByBookId"
+						javaType="java.util.ArrayList"
+						ofType="AuthorVO"></collection>
+		</resultMap>
+		
+		<select id="selectAllBooks" parameterType="BookSearchVO" resultMap="bookVOMap" >
+			
+			<include refid="CommonDao.PAGING_HEADER" />
+			SELECT	B.BOOK_ID
+					, B.BOOK_NM
+					, B.BOOK_SUB_NM
+					, B.RLS_DT
+					, B.ISBN
+					, B.PRICE
+					, B.INTRO
+					, B.IDX
+					, B.PBLSHR_ID B_PBLSHR_ID
+					, P.PBLSHR_ID
+					, P.PBLSHR_NM
+			FROM		BOOK B
+					, PBLSHR P
+			WHERE	B.PBLSHR_ID = P.PBLSHR_ID
+			ORDER	BY BOOK_ID DESC
+			<include refid="CommonDao.PAGING_FOOTER" />
+			
+		</select>
+		
+		<select id="selectAllBooksCount" parameterType="BookSearchVO" resultType="_int">
+			SELECT COUNT(1)
+			FROM		BOOK B
+					, PBLSHR P
+			WHERE	B.PBLSHR_ID = P.PBLSHR_ID
+		</select>
+		
+	</mapper>
+	
+	

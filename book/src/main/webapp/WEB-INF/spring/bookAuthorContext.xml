@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="bookAuthDaoImpl" class="com.naver.book.bookauth.dao.BookAuthDaoImpl">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate"></property>
+	</bean>
+	
+	<bean id="bookAuthBizImpl" class="com.naver.book.bookauth.biz.BookAuthBizImpl">
+		<property name="bookAuthDao" ref="bookAuthDaoImpl"></property>
+	</bean>
+
+
+</beans>
